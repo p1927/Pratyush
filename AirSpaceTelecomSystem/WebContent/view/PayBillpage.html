@@ -4,25 +4,28 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
+<link rel="stylesheet prefetch" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
+<link rel='stylesheet' type='text/css' href='css/style.css'>
 </head>
 <body>
 <div class="content">
 	<c:if test="${sessionScope.user ne null}">
-		<h2>AirSpace Telecomm</h2>
-		<h3>Pay Your Bill Here</h3>
-		<div align="center">Payment for the mobile number ${sessionScope.user.mobileNo}</div> 
+		<h1 class="myHeader" align="center">AirSpace Telecomm</h1>
+		<h2 align="center">Pay Your Bill Here</h2>
+		<div class="box1"> <div  align="center" style="font-size:20px">Payment for the mobile number ${sessionScope.user.mobileNo}</div> 
 		<br/>
 		<form action="result.do" method ="post">
-			<table>
+			<table align="center" >
 				<tr>
 					<td>Enter the amount to Pay</td>
 					<td><input type = "text" name="result" pattern="[0-9]+" min="1" required/></td>
 				</tr>		
 				<tr>
-					<td colspan="2"><input type="submit" value="Pay" class="button"></td>
+					<td colspan="2"><input type="submit" value="Pay" class="text-center btn-block btn btn-info text-right"></td>
 				</tr>
 			</table>
 		</form>
+</div>
 	</c:if>
 </div>
 </body>
