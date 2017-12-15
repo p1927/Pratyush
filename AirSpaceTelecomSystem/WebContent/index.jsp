@@ -7,6 +7,10 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<%response.sendRedirect("view/Register.jsp"); %>
+<div >
+	<h1 class="myHeader" align="center">AirSpace Telecomm</h1>
+</div>
+	<input type="submit" onclick="response.sendRedirect("view/Register.jsp");" value="Register" class="text-center btn-block btn btn-info text-right"></input>
+
 </body>
 </html>
