@@ -11,9 +11,9 @@
 <body>
 <div class="content">
 	<h1 class="myHeader" align="center">AirSpace Telecomm</h1>
-	<h2 align="center">Welcome ${sessionScope.user.userName}</h2>
+	<h2 align="center">Welcome ${sessionScope.user.name}</h2>
 <div class="box1"> <div  align="center" style="font-size:20px">	
-The pending bill amount for your Mobile Number: ${sessionScope.user.mobileNo} is Rs.750<br>
+The pending bill amount for your Mobile Number: ${sessionScope.user.mobileNo} is Rs.${sessionScope.user.bill}<br>
 	<a href="Payment.obj?mobileNo=${sessionScope.user.mobileNo}"><input type = "submit" style="width:150px;" value="Pay Bill" class="text-center btn-block btn btn-info text-right" /></a>
 </div> </div>
 </div>

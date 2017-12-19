@@ -5,12 +5,16 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
+<link rel='stylesheet' type='text/css' href='css/style.css'>
+<link rel="stylesheet prefetch" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
+
 </head>
 <body>
 <div >
-	<h1 class="myHeader" align="center">AirSpace Telecomm</h1>
+	<h1 class="myHeader box1" align="center">Welcome to AirSpace Telecomm</h1>
 </div>
-	<input type="submit" onclick="response.sendRedirect("view/Register.jsp");" value="Register" class="text-center btn-block btn btn-info text-right"></input>
-
+	<div align="center"><input type="submit"  onclick="ab();" value="Register" class="text-center btn-block btn btn-info text-right"></input>
+<%response.sendRedirect("view/Register.jsp");%>
+</div>
 </body>
 </html>

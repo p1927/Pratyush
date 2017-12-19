@@ -1,6 +1,7 @@
 package com.cg.asts.controller;
 
 import java.io.IOException;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,7 +15,7 @@ import com.cg.asts.exception.AirSpaceException;
 import com.cg.asts.service.CustomerServiceImpl;
 import com.cg.asts.service.ICustomerService;
 
-@WebServlet("*.do")
+@WebServlet("*.obj")
 public class ProcessUser extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -40,7 +41,7 @@ public class ProcessUser extends HttpServlet {
 		
 		switch(path) {
 		//Registration code
-		case "/register.do":
+		case "/register.obj":
 			String name  = request.getParameter("name");
 			String userName = request.getParameter("uname");
 			String mobNo = request.getParameter("mobileno");

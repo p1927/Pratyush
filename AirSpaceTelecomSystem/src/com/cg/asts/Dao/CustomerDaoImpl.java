@@ -16,7 +16,7 @@ public class CustomerDaoImpl implements ICustomerDao{
 		int status = 0;
 		try {
 			con=DbUtil.getConnection();
-			String sql = "Insert into Users values (?,?,?,?)";
+			String sql = "Insert into User values (?,?,?,?)";
 			PreparedStatement pstm = con.prepareStatement(sql);
 			pstm.setString(1, user.getName());
 			pstm.setString(2, user.getUserName());
