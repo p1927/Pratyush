@@ -8,7 +8,6 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>AirSpace Telecomm</title>
-<!-- <link rel="stylesheet prefetch" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"> -->
 <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 <link rel='stylesheet' type='text/css' href='views/css/stylelogin.css'>
 
@@ -18,13 +17,13 @@
 	<div >
 	<h1 class="myHeader" align="center">AirSpace Telecomm</h1>
 	</div>
-	<c:url var="myAction" value="${sessionScope.curlval}"></c:url>
+	<c:url var="myAction" value="Login.obj"></c:url>
 	<form id="form" action="${myAction}"  method="post" > 
 	
 	<div class="box">
       <h1 id="logintoregister">Login</h1>
     <div class="group">      
-      <input id="una" class="inputMaterial" type="text" name="uname" oninput="dbcheck(this.value);" required>
+      <input id="una" class="inputMaterial" type="text" name="uname" oninput="" required>
       <span class="highlight"></span>
       <span class="bar"></span>
       <label>Username</label>
@@ -60,65 +59,10 @@
       <p id="textchange" onclick="register();" > Register Here</p>
     </div>
     
-      
-
-	
-	
-	<%-- <div id="box" align="center">
-	
-			
-			
-			
-			
-			
-	<div class="box1">	
-		
-	<table >
-				<h2 align="center">Enter Login Details</h2>
-				<tr>
-					
-					<td align="left">Username</td>
-					<td><input id="una" type="text" name="uname" required/></td>
-				</tr>
-
-				<tr>
-					<td align="left">Password</td>
-					<td><input type="password" id="password" name="pwd" required/></td> 
-				</tr>
-		
-					
-				<tr>
-					<td colspan="2" align="center"><input type="submit" value="Login" class="text-center btn-block btn btn-info text-right"></input></td>
-				</tr>
-				<tr>
-				<td>
-				<p id="forgpass"></p> 
-			  	</td>
-			  	</tr>
-			 </table>
-			 </div>
-		</form>
-		</div>
-		<br>
-		<hr>
-		<p> Not a registered user?</p><br>
-		
-		<div align="center"><c:url var="doAction" value="Reg.obj"></c:url>
-	             <form action="${doAction}" method="post">
-				<button type="submit" class="text-center btn-block btn btn-info text-right">Register Here</button>
-				</form></div>
-<div id="msg" ></div>
-<hr><br>
-<div align="center"><c:url var="doon" value="Getdata.obj"></c:url>
-	             <form action="${doon}" method="post">
-				<button type="submit" class="text-center btn-block btn btn-info text-right">Get Users</button>
-				</form></div>
-		</div> --%>
+///////////////////////////////////////////////////
 		<script>
-		////////////////////////
 		
-		$('una').removeAttr('oninput');
-			
+		
 		<% if(session.getAttribute("info")=="NR"){%>
 		document.querySelector("#plogintoregister").innerHTML="You are not registered with us. Please Register.";
 		<%}%>
@@ -127,51 +71,42 @@
 		document.querySelector("#plogintoregister").innerHTML="The Password in incorrect. Please try again.";
 		document.querySelector("#una").value=session.getAttribute("unret");
 		<%}%>
-		/////////////////
+		////////////////////////////
 		var cont = 0;
 
 function register(){
 console.log("inside");
      cont++;
 		
-		if(cont==1){
+		if(cont==1){////////////////////////////////////USER CLICKS ON REGISTER
 		 	$('.box').animate({height:'595px'}, 550);
 			$('.show').css('display','block');
 			$('#logintoregister').text('Registration');
 			$('#buttonlogintoregister').text('Register');
 			$('#plogintoregister').text("Already registered?");
 			$('#textchange').text('Login');
-			/* <c:set var="myAction" value="Register.obj"/> 
-			document.querySelector('#form').onSubmit="validatePassword();";
-			document.querySelector('#una').oninput="dbcheck(this.value);"; */
 			document.querySelector('#name').disabled=false;
 			document.querySelector('#mbno').disabled=false;
 			document.querySelector('#confirmPassword').disabled=false;
 			
-			$('#una').attr('oninput', 'test');
+			$('#una').attr('oninput', 'dbcheck(this.value);');
 
-			/////////////////
-			
-			
-			$.ajax({
-				type: "POST",
-				url:  'Reg.obj',
-				success: function(resp){
-				}
-				}); 
-			///////////////////
+			/////////////////////////////////////////////////
 			
 			
 		}
 		else
-		{
+		{///////////////////////////////////////////USER CLICKS ON LOGIN 
 			$('.show').css('display','none');
 			$('.box').animate({height:'365px'}, 550);
 			$('#logintoregister').text('Login');
 			$('#buttonlogintoregister').text('Login');
 			$('#plogintoregister').text("Not a registered User?");
 			$('#textchange').text('Register');
-			
+			$('una').removeAttr('oninput');
+			document.querySelector('#name').disabled=true;
+			document.querySelector('#mbno').disabled=true;
+			document.querySelector('#confirmPassword').disabled=true;
 			cont = 0;
 		}
 }
@@ -179,9 +114,10 @@ console.log("inside");
 		function validatePassword(){
 			var a=document.querySelector('#password').value;
 			var b=document.querySelector('#confirmPassword').value;
-			if (a!=b){ $('#plogintoregister').text("Passwords do not match. Try Again"); }
+			if (a!=b){ $('#plogintoregister').text("Passwords do not match. Try Again"); 
 			document.querySelector('#password').value="";
-			document.querySelector('#confirmPassword').value='';
+			document.querySelector('#confirmPassword').value='';}
+			else $('#plogintoregister').text("Password looks secure!");
 		}
 		
 		function dbcheck(uname)
@@ -197,7 +133,7 @@ console.log("inside");
 				
 						}
 				}); 
-			};
+			}
 		</script>
 </body>
 </html>

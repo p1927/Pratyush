@@ -48,45 +48,43 @@ public class ProcessUser extends HttpServlet {
 		String targetHome= "views/CustomerHome.jsp";
 		String targetPay="views/PayBill.jsp";
 		String targetError = "views/Error.jsp";
-		String targetReg = "views/Register.jsp";
 		String targetdata = "views/Data.jsp";
 		String targetlogin = "views/Login.jsp";
+		
 		UserBean user = new UserBean();
 		CustomerService customerService = new CustomerServiceImpl();
-		///
-		//CustomerDAOImpl dao= new CustomerDAOImpl();
+	
 		
 		
-		session.setAttribute("curlval","Login.obj");
+	
 		
-		switch(path){
-		case "/index.obj": { target=targetlogin;
+switch(path){
+/////////////////////////////////////////////////////////INDEX		
+case "/index.obj": { target=targetlogin;
 			break;}
-		
-		case "/valid.obj": { 
-		
-				CustomerDAOImpl dao= new CustomerDAOImpl();
-				try {
+/////////////////////////////////////////////////////////AJAX VALIDATION		
+case "/valid.obj": 
+		{				CustomerDAOImpl dao= new CustomerDAOImpl();
+				try 
+				{
 					int code=dao.check(request.getParameter("userN"));
 					response.setContentType("text/plain");
 					response.getWriter().write(Integer.toString(code));
 					return;
-				} catch (AirSpaceException e) {
-					// TODO Auto-generated catch block
+				} 
+				catch (AirSpaceException e) 
+				{
 					e.printStackTrace();
 				}
 
-			break;}
+				break;
+		}
 			
-		case "/Reg.obj":
-			{session.setAttribute("oninput","dbcheck(this.value);");
-			session.setAttribute("curlval","Register.obj");
-			
-			return;	
-			}
+		
 //////////////////////////////////////////////		
-		case "/Login.obj":
-			{
+case "/Login.obj":
+		if(request.getParameter("name")==null && !request.getParameter("uname").equals("admin"))	
+		{/////////////////////////////////////////////////////////LOGIN
 			HttpSession sessionnew = request.getSession(true);
 			String uName = request.getParameter("uname");
 			String pwd =  request.getParameter("pwd");
@@ -98,70 +96,86 @@ public class ProcessUser extends HttpServlet {
 				udatalog = datagetter.fakeget();
 				//udatalog = datagetter.get();
 				UserBean currentf=null;
+				target = targetlogin;
 				for (UserBean current : udatalog)
 				{
-				if (uName.equals(current.getUserName())&& pwd.equals(current.getPwd()) )
-				{ currentf=current; 
-				System.out.println(currentf.getUserName());
-				sessionnew.setAttribute("user", currentf);
-				sessionnew.setAttribute("info", "R");
-				target = targetHome;i=1;
-				break;
-				}
-				///////////
-				if (uName.equals(current.getUserName())&& !pwd.equals(current.getPwd()) )
-				{ target = targetlogin;
-				sessionnew.setAttribute("info", "WRONG PASS");
-				sessionnew.setAttribute("unret", uName);
-				i=2;
-				break;
-				}
-				///////////
-				}
-				
-				if (i==0){target = targetlogin;
-				sessionnew.setAttribute("info", "NR");
-				break;}
+				///////////////////////////////////////IF USERNAME AND PASSWORD MATCH	
+						if (uName.equals(current.getUserName())&& pwd.equals(current.getPwd()) )
+						{ currentf=current; 
+						System.out.println(currentf.getUserName());
+						sessionnew.setAttribute("user", currentf);
+						sessionnew.setAttribute("info", "R");
+						target = targetHome;i=1;
+						break;
+						}
+                ///////////////////////IF USERNAME MATCHES AND PASSWORD DOES NOT MATCH	
+						if (uName.equals(current.getUserName())&& !pwd.equals(current.getPwd()) )
+						{ 
+						sessionnew.setAttribute("info", "WRONG PASS");
+						sessionnew.setAttribute("unret", uName);
+						i=2;
+						break;
+						}
+						}
+				////////////////////// IF NOTHING MATCHES
+						if (i==0){
+						sessionnew.setAttribute("info", "NR");
+						break;}
 				
 			} catch (AirSpaceException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-						
+									
 			break;}
-//////////////////////////////////////////////////////		
-		case "/Getdata.obj":
-			{CSI dataget = new CSI();
-			try{
-			ArrayList<UserBean> udata=dataget.fakeget();
-			//ArrayList<UserBean> udata=dataget.get();
-			session.setAttribute("data", udata);
-			session.setAttribute("length",udata.size() );
-			target= targetdata;
+//////////////////////////////////////////////////////FEATURE FOR ADMINISTRATOR	
+			else if (request.getParameter("name")==null && request.getParameter("uname").equals("admin"))
+			{	
+					if(request.getParameter("pwd").equals("admin"))
+					{
+						CSI dataget = new CSI();
+						try{
+						ArrayList<UserBean> udata=dataget.fakeget();
+						//ArrayList<UserBean> udata=dataget.get();
+						session.setAttribute("data", udata);
+						session.setAttribute("length",udata.size() );
+						target= targetdata;
+						}
+						catch (AirSpaceException e){}
+						break;
+					
+					}
+					else 
+					{ 
+						session.setAttribute("info", "WRONG PASS");
+						session.setAttribute("unret", "admin");
+						target=targetlogin;
+						break;
+					}
+			
 			}
-			catch (AirSpaceException e){}
-			break;
-			}
-		
-		case "/Register.obj":
-			{String name  = request.getParameter("name");
-			String uName = request.getParameter("uname");
-			String mobileNo = request.getParameter("mobileno");
-			String pwd =  request.getParameter("pwd");
+		  
+			else /////////////////////////////////////////REGISTRATION
+			{
+				String name  = request.getParameter("name");
+				String uName = request.getParameter("uname");
+				String mobileNo = request.getParameter("mobileno");
+				String pwd =  request.getParameter("pwd");
+				
+				//User details are added to the bean object and then added to Database by calling Service Layer.
+				
+				user.setName(name);
+				user.setUserName(uName);
+				user.setPwd(pwd);
+				user.setMobileNo(mobileNo);
 			
-			//User details are added to the bean object and then added to Database by calling Service Layer.
-			
-			user.setName(name);
-			user.setUserName(uName);
-			user.setPwd(pwd);
-			user.setMobileNo(mobileNo);
-			
-			try {
+			try 
+			{
 				customerService.addUser(user);
 				session.setAttribute("user", user);
-			} catch (AirSpaceException e) {
-				// TODO Auto-generated catch block
+			} 
+			catch (AirSpaceException e) 
+			{
 				session.setAttribute("error", e.getMessage());
 				RequestDispatcher dispatcher = request.getRequestDispatcher(targetError);
 				dispatcher.forward(request, response);
@@ -169,27 +183,33 @@ public class ProcessUser extends HttpServlet {
 			}
 			target = targetHome;
 			break;}
+	
+			
 		//Forwards to payment page
 		case "/Payment.obj":
-			/*{String bill = ((UserBean)session.getAttribute("user")).getBill();
-			session.setAttribute("bill",bill);	*/	
-			{target = targetPay;
-			break;}
+			{
+				target = targetPay;
+				break;
+			}
 		
 		//Success page is invoked
 		case "/Result.obj":
-			{Integer price = Integer.parseInt(request.getParameter("result"));
-			UserBean use = (UserBean) session.getAttribute("user");
-			Integer Balance = Integer.parseInt(use.getBill())-price;
-			try {
-				customerService.Adjustbill(use,Balance);
-			} catch (AirSpaceException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			{
+				Integer price = Integer.parseInt(request.getParameter("result"));
+				UserBean use = (UserBean) session.getAttribute("user");
+				Integer Balance = Integer.parseInt(use.getBill())-price;
+				try {
+					customerService.Adjustbill(use,Balance);
+					} 
+				catch (AirSpaceException e) 
+				{
+					e.printStackTrace();
+				}
+				session.setAttribute("balance", Balance);
+				target = targetSuccess;
+				break;
 			}
-			session.setAttribute("balance", Balance);
-			target = targetSuccess;
-			break;}
+			
 		case "/Back.obj":
 			{session.setAttribute("error", null);
 			target = targetlogin;

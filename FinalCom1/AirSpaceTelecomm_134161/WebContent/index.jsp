@@ -19,6 +19,8 @@
 	<form action="${myAction}" method="post" > 
 	<input type="submit"  value="Enter" class="text-center btn-block btn btn-info text-right"></input>
 </form>
+<hr><br>
+<p>This Web application is under development.</p>
 </div>
 </body>
 </html>
