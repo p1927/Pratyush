@@ -40,8 +40,8 @@
       <tbody>
         
       <%CSI dataget = new CSI();
-     // List<UserBean> udata=dataget.fakeget();
-   List<UserBean> udata=dataget.get();
+      List<UserBean> udata=dataget.fakeget();
+   //List<UserBean> udata=dataget.get();
      
 for (UserBean U: udata)
 	

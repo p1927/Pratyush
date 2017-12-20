@@ -70,15 +70,17 @@ function dbcheck(uname)
 { 
    $.ajax({
 		type: "POST",
-		url:  "/Register.jsp",
-		data: "userN="+uname.val(),
+		url:  'valid.obj',
+		data: {userN:uname},
+		success: function(resp) {
+		if(resp=='1')
+		$('#message').text("The Username already exists. Try Again.");  
+		else  $('#message').text("Pretty Good."); 
+		
+				}
 		}); 
 	
-<%CustomerDAOImpl dao= new CustomerDAOImpl();
-if(dao.check(request.getParameter("userN"))==1)
-{ %> document.querySelector("#message").innerHTML= "The Username already exists. Try Again."; <% }
 
-else {%> document.querySelector("#message").innerHTML= "Pretty Good."; <%}%>
 	 
 	};
 

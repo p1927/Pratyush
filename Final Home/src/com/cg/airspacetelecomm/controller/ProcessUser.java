@@ -34,7 +34,8 @@ public class ProcessUser extends HttpServlet {
 		
 		//Creating required objects and initializing(If required)
 
-		HttpSession session = request.getSession(true);
+		//HttpSession session = request.getSession(true);
+		HttpSession session = request.getSession(false);
 		String path = request.getServletPath().trim();
 			
 			
@@ -49,31 +50,44 @@ public class ProcessUser extends HttpServlet {
 		String targetError = "views/Error.jsp";
 		String targetReg = "views/Register.jsp";
 		String targetdata = "views/Data.jsp";
+		String targetlogin = "views/Login.jsp";
 		UserBean user = new UserBean();
 		CustomerService customerService = new CustomerServiceImpl();
 		///
 		//CustomerDAOImpl dao= new CustomerDAOImpl();
 		
-		switch(path){
-		/*case "validate?userName=*": 
-		{ 
-			try {
-			int i=dao.check(request.getParameter("uname"));
-			session.setAttribute("valid", i);
-		} catch (AirSpaceException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
-			
-			
-			break;}*/
-		case "/Reg.obj":
-			{target=targetReg;
+		session.setAttribute("curlval","Login.obj");
+		
+		switch(path){
+		case "/index.obj": { target=targetlogin;
 			break;}
+		
+		case "/valid.obj": { 
+		
+				CustomerDAOImpl dao= new CustomerDAOImpl();
+				try {
+					int code=dao.check(request.getParameter("userN"));
+					response.setContentType("text/plain");
+					response.getWriter().write(Integer.toString(code));
+					return;
+				} catch (AirSpaceException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			break;}
+			
+		case "/Reg.obj":
+			{session.setAttribute("oninput","dbcheck(this.value);");
+			session.setAttribute("curlval","Register.obj");
+			
+			return;	
+			}
 //////////////////////////////////////////////		
 		case "/Login.obj":
 			{
+			HttpSession sessionnew = request.getSession(true);
 			String uName = request.getParameter("uname");
 			String pwd =  request.getParameter("pwd");
 			System.out.println(uName);
@@ -81,23 +95,32 @@ public class ProcessUser extends HttpServlet {
 			int i=0;
 			ArrayList<UserBean> udatalog;
 			try {
-				//udatalog = datagetter.fakeget();
-				udatalog = datagetter.get();
+				udatalog = datagetter.fakeget();
+				//udatalog = datagetter.get();
 				UserBean currentf=null;
 				for (UserBean current : udatalog)
 				{
-				if (uName.equals(current.getUserName()) )
+				if (uName.equals(current.getUserName())&& pwd.equals(current.getPwd()) )
 				{ currentf=current; 
 				System.out.println(currentf.getUserName());
-				session.setAttribute("user", currentf);
-				session.setAttribute("info", "R");
+				sessionnew.setAttribute("user", currentf);
+				sessionnew.setAttribute("info", "R");
 				target = targetHome;i=1;
 				break;
 				}
-				
+				///////////
+				if (uName.equals(current.getUserName())&& !pwd.equals(current.getPwd()) )
+				{ target = targetlogin;
+				sessionnew.setAttribute("info", "WRONG PASS");
+				sessionnew.setAttribute("unret", uName);
+				i=2;
+				break;
 				}
-				if (i==0){target = targetReg;
-				session.setAttribute("info", "NR");
+				///////////
+				}
+				
+				if (i==0){target = targetlogin;
+				sessionnew.setAttribute("info", "NR");
 				break;}
 				
 			} catch (AirSpaceException e) {
@@ -111,8 +134,8 @@ public class ProcessUser extends HttpServlet {
 		case "/Getdata.obj":
 			{CSI dataget = new CSI();
 			try{
-			//ArrayList<UserBean> udata=dataget.fakeget();
-			ArrayList<UserBean> udata=dataget.get();
+			ArrayList<UserBean> udata=dataget.fakeget();
+			//ArrayList<UserBean> udata=dataget.get();
 			session.setAttribute("data", udata);
 			session.setAttribute("length",udata.size() );
 			target= targetdata;
@@ -169,7 +192,7 @@ public class ProcessUser extends HttpServlet {
 			break;}
 		case "/Back.obj":
 			{session.setAttribute("error", null);
-			target = targetReg;
+			target = targetlogin;
 			break;}
 		}
 		

@@ -4,8 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+
 import com.cg.airspacetelecomm.bean.UserBean;
 import com.cg.airspacetelecomm.exception.AirSpaceException;
+import com.cg.airspacetelecomm.service.CSI;
 import com.cg.airspacetelecomm.util.DBConnection;
 
 public class CustomerDAOImpl implements CustomerDAO {
@@ -82,9 +85,18 @@ public class CustomerDAOImpl implements CustomerDAO {
 	//////////////////////////////
 	public int check(String un) throws AirSpaceException {
 		// TODO Auto-generated method stub
-		System.out.println("Insider fucks");
+		System.out.println("Insider ");
 		System.out.println(un);
-		return 1;
+		CSI dataget = new CSI();
+		
+		ArrayList<UserBean> udata=dataget.fakeget();
+		for(UserBean currbean : udata)
+		{if (currbean.getUserName().equals(un))
+			return 1;
+		}
+		
+		
+		return 0;
 		/*Connection con = null;
 	PreparedStatement statement = null;
 	con = DBConnection.getConnection();

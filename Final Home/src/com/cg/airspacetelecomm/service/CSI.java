@@ -73,6 +73,7 @@ public class CSI {
 	 user1.setUserName("Amigo");
 	 user1.setPwd("zapatos");
 	 user1.setMobileNo("amor");
+	 user1.setBill("456");
 	 uselist.add(user1);
 	 /////////////////
 	return uselist;

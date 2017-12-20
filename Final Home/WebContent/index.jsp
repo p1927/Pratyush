@@ -15,9 +15,9 @@
 	<h1 class="myHeader box1" align="center">Welcome to AirSpace Telecomm</h1>
 </div>
 	<div align="center">
-	<c:url var="myAction" value="Reg.obj"> </c:url>
+	<c:url var="myAction" value="index.obj"> </c:url>
 	<form action="${myAction}" method="post" > 
-	<input type="submit"  value="Register" class="text-center btn-block btn btn-info text-right"></input>
+	<input type="submit"  value="Enter" class="text-center btn-block btn btn-info text-right"></input>
 </form>
 </div>
 </body>
