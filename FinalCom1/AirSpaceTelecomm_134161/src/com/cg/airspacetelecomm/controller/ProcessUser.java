@@ -81,7 +81,7 @@ case "/valid.obj":
 		}
 			
 		
-//////////////////////////////////////////////		
+//////////////////////////////////////////////////////////////////		
 case "/Login.obj":
 		if(request.getParameter("name")==null && !request.getParameter("uname").equals("admin"))	
 		{/////////////////////////////////////////////////////////LOGIN
@@ -214,7 +214,56 @@ case "/Login.obj":
 			{session.setAttribute("error", null);
 			target = targetlogin;
 			break;}
+		
+		case "/Editdata.obj": {
+			///////////
+			
+			String name  = request.getParameter("Name");
+			String uName = request.getParameter("User Name");
+			String mobileNo = request.getParameter("Mobile No");
+			String pwd =  request.getParameter("Password");
+			String bill =  request.getParameter("Amount Due");
+			
+			//User details are added to the bean object and then added to Database by calling Service Layer.
+			
+			user.setName(name);
+			user.setUserName(uName);
+			user.setPwd(pwd);
+			user.setMobileNo(mobileNo);
+			user.setBill(bill);
+		
+		try 
+		{
+			customerService.editUser(user);
+			///
+			CSI dataget = new CSI();
+			try{
+			ArrayList<UserBean> udata=dataget.fakeget();
+			//ArrayList<UserBean> udata=dataget.get();
+			session.setAttribute("data", udata);
+			session.setAttribute("length",udata.size() );
+			target= targetdata;
+			}
+			catch (AirSpaceException e){}
+			break;
+			//
+			
+		} 
+		catch (AirSpaceException e) 
+		{
+			session.setAttribute("error", e.getMessage());
+			RequestDispatcher dispatcher = request.getRequestDispatcher(targetError);
+			dispatcher.forward(request, response);
+			System.err.println(e.getMessage());
 		}
+		
+			//////////
+			
+				
+		} 
+			
+		}
+
 		
 		//InterServlet Communication is done by using RequesDispatcher and then forwarding the response.
 		RequestDispatcher dispatcher = request.getRequestDispatcher(target);

@@ -18,19 +18,24 @@ public class CustomerServiceImpl implements CustomerService {
 		 - Creation Date	:	22/09/2017
 		 - Description		:	adds user details to the users table by invoking dao addUser method.
 		 ****************************************************************************************************************/
-
+	CustomerDAO paydao = new CustomerDAOImpl();
 
 	@Override
 	public void addUser(UserBean user) throws AirSpaceException {
 		// TODO Auto-generated method stub
-		CustomerDAO paydao = new CustomerDAOImpl();
+		
 		paydao.addUser(user);
 	}
 	@Override
 	public void Adjustbill(UserBean user,int Balance) throws AirSpaceException{
-		CustomerDAO paydao = new CustomerDAOImpl();
+		
 		paydao.Adjustbill(user,Balance);
 		
+	}
+	@Override
+	public void editUser(UserBean user) throws AirSpaceException {
+		// TODO Auto-generated method stub
+		paydao.editUser(user);
 	}
 
 }

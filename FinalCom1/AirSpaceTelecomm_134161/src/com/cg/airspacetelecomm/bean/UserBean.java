@@ -1,6 +1,7 @@
 package com.cg.airspacetelecomm.bean;
 
 public class UserBean {
+	private int key;
 	private String name;
 	private String userName;
 	private String pwd;
@@ -35,6 +36,12 @@ public class UserBean {
 	}
 	public void setBill(String bill) {
 		this.bill = bill;
+	}
+	public int getKey() {
+		return key;
+	}
+	public void setKey(int key) {
+		this.key = key;
 	}
 	
 	

@@ -12,20 +12,23 @@ import com.cg.airspacetelecomm.service.CSI;
 import com.cg.airspacetelecomm.util.DBConnection;
 
 public class CustomerDAOImpl implements CustomerDAO {
-
-	//@Override
+	
+	
+	Connection con = null;
+	PreparedStatement statement = null;
+	
+	
 	public void addUser(UserBean user) throws AirSpaceException {
 		// TODO Auto-generated method stub
-		Connection con = null;
-		PreparedStatement statement = null;
 		con = DBConnection.getConnection();
-		String query = "insert into UserDB VALUES(?,?,?,?,'750')";
+		String query = "insert into UserDB VALUES(?,?,?,?,?,'750')";
 		try {
 			statement = con.prepareStatement(query);
 			statement.setString(1, user.getName());
-			statement.setString(2, user.getUserName());
-			statement.setString(3, user.getPwd());
-			statement.setString(4, user.getMobileNo());
+			statement.setString(2, user.getName());
+			statement.setString(3, user.getUserName());
+			statement.setString(4, user.getPwd());
+			statement.setString(5, user.getMobileNo());
 			
 			statement.executeUpdate();
 			
@@ -47,10 +50,10 @@ public class CustomerDAOImpl implements CustomerDAO {
 
 	}
 	
+	
+
 	public void Adjustbill(UserBean user,int Balance) throws AirSpaceException {
 		// TODO Auto-generated method stub
-		Connection con = null;
-		PreparedStatement statement = null;
 		con = DBConnection.getConnection();
 		String query = "update UserDB set BILL=? WHERE USERNAME=? AND PASS=?";
 		try {
@@ -97,9 +100,8 @@ public class CustomerDAOImpl implements CustomerDAO {
 		
 		
 		return 0;
-		/*Connection con = null;
-	PreparedStatement statement = null;
-	con = DBConnection.getConnection();
+		/*
+		  con = DBConnection.getConnection();
 	String query = "SELECT USERNAME FROM UserDB WHERE USERNAME=?";
 	try {
 		statement = con.prepareStatement(query);
@@ -132,4 +134,47 @@ public class CustomerDAOImpl implements CustomerDAO {
 	*/
 	
 
-}}
+}
+
+	
+	public void editUser(UserBean user) throws AirSpaceException {
+		// TODO Auto-generated method stub
+		
+		con = DBConnection.getConnection();
+		
+		try {
+			String query = "delete from UserDB where key=?";
+			statement.setString(1, Integer.toString((user.getKey())));
+			statement = con.prepareStatement(query);
+			statement.executeUpdate();
+			query = "insert into UserDB VALUES(?,?,?,?,?,?)";
+			statement = con.prepareStatement(query);
+			statement.setString(1, Integer.toString((user.getKey())));
+			statement.setString(2, user.getName());
+			statement.setString(3, user.getUserName());
+			statement.setString(4, user.getPwd());
+			statement.setString(5, user.getMobileNo());
+			statement.setString(6, user.getBill());
+			
+			statement.executeUpdate();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			throw new AirSpaceException("Details Couldn't be added due to SQL Error : " + e.getMessage());
+		}
+		finally
+		{
+			try {
+				statement.close();
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				throw new AirSpaceException("Connection could not be closed" + e.getMessage());
+			}
+			
+		}
+
+	}
+	
+
+}
